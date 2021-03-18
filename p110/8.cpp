@@ -1,10 +1,23 @@
 #include<iostream>
-#include<vector>
-#include<variant>
+
+// (**) Eliminate consecutive duplicates of list elements.
+
+template<typename T>
+void compress(T* compress, int size) {
+    int found = 0;
+    for (int i = 1; i < size - found; i++) {
+        if (compress[i] == compress[i - 1]) {
+            for (int j = i; j < size - found; j++)
+                compress[j] = compress[j + 1];
+            found++;
+            i--;
+        }
+    }
+}
 
 int main() {
-    // This type _looks_ insane, but it's what I could figure out
-    std::variant<int, float> x = 5;
-    int y = std::get<int>(x);
-    std::cout << y << std::endl;
+    char word[20] = "aaaabccaadeeee";
+    std::cout << word << std::endl;
+    compress(word, 20);
+    std::cout << word << std::endl;
 }
