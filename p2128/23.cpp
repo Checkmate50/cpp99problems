@@ -8,9 +8,9 @@
 // Avoid modifying the underlying vector with a copy
 // Assumes a seed has already been set for rand
 template<typename T>
-std::vector<T> rnd_select(std::vector<T> v, int count) {
-    std::vector<T> cp = v;
-    std::vector<T> result;
+T rnd_select(T const& v, int count) {
+    T cp = v;
+    T result;
     result.reserve(count);
     if (count >= cp.size())
         return cp;
