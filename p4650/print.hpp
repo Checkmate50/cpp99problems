@@ -7,8 +7,8 @@ void print_bool(bool b);
 
 void print_vec(std::vector<char> v);
 
-template<typename T>
-void print_vec(std::vector<std::pair<T, T>> v) {
+template<typename T, typename U>
+void print_vec(std::vector<std::pair<T, U>> v) {
     std::cout<<'[';
     if (v.size() > 0) {
         for (int i = 0; i < v.size()-1; i++) {
