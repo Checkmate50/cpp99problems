@@ -8,40 +8,32 @@
 #include<memory>
 #include"print.hpp"
 
-typedef std::pair<char, double> combo;
-#define combo_ptr std::unique_ptr<combo> 
-#define Node_ptr std::unique_ptr<Node>
-#define combo_node std::variant<combo_ptr, Node_ptr>
-typedef std::pair<char, std::string> encoding;
+struct Node;
+
+using combo = std::pair<char, double>;
+using combo_ptr = std::unique_ptr<combo>;
+using Node_ptr = std::unique_ptr<Node>;
+using combo_node = std::variant<combo_ptr, Node_ptr>;
+using encoding = std::pair<char, std::string>;
 
 struct Node {
     combo_node left;
     combo_node right;
     double prob;
-    Node(combo_ptr l, combo_ptr r, const double& prob) 
-        : left(std::move(l)), right(std::move(r)), prob(prob) {}
-    Node(Node_ptr l, combo_ptr r, const double& prob) 
-        : left(std::move(l)), right(std::move(r)), prob(prob) {}
-    Node(combo_ptr l, Node_ptr r, const double& prob) 
-        : left(std::move(l)), right(std::move(r)), prob(prob) {}
-    Node(Node_ptr l, Node_ptr r, const double& prob) 
+    Node(combo_node l, combo_node r, double prob) 
         : left(std::move(l)), right(std::move(r)), prob(prob) {}
 };
 
 // Sorts low to high
 bool comp_weighted_encodings(const combo_node& l, const combo_node& r) {
-    if (std::holds_alternative<combo_ptr>(l)) {
-        auto& lp = std::get<combo_ptr>(l);
-        if (std::holds_alternative<combo_ptr>(r)) {
-            auto& rp = std::get<combo_ptr>(r);
-            return lp->second > rp->second;
-        }
-        return lp->second > std::get<Node_ptr>(r)->prob;
+    if (auto* lp = std::get_if<combo_ptr>(&l)) {
+        if (auto* rp = std::get_if<combo_ptr>(&r))
+            return (*lp)->second > (*rp)->second;
+        return (*lp)->second > std::get<Node_ptr>(r)->prob;
     }
     auto& ln = std::get<Node_ptr>(l);
-    if (std::holds_alternative<combo_ptr>(r)) {
-        auto& rp = std::get<combo_ptr>(r);
-        return ln->prob > rp->second;
+    if (auto* rp = std::get_if<combo_ptr>(&r)) {
+        return ln->prob > (*rp)->second;
     }
     return ln->prob > std::get<Node_ptr>(r)->prob;
 }
@@ -50,7 +42,7 @@ template<typename TIter>
 std::priority_queue<combo_node, 
         std::vector<combo_node>, 
         decltype(&comp_weighted_encodings)> 
-            sort_and_weight(const TIter start, const int& size) {
+            sort_and_weight(const TIter start, int size) {
     std::vector<combo_ptr> vec;
     vec.reserve(size);
     double sum = 0;
@@ -69,22 +61,19 @@ std::priority_queue<combo_node,
 
 combo_node build_node(combo_node&& l, combo_node&& r) {
     double probability;
-    if (std::holds_alternative<combo_ptr>(l)) {
-        auto& lp = std::get<combo_ptr>(l);
-        if (std::holds_alternative<combo_ptr>(r)) {
-            auto& rp = std::get<combo_ptr>(r);
-            probability = lp->second + rp->second;
-            return std::make_unique<Node>(std::move(lp), std::move(rp), probability);
+    if (auto* lp = std::get_if<combo_ptr>(&l)) {
+        if (auto* rp = std::get_if<combo_ptr>(&r)) {
+            probability = (*lp)->second + (*rp)->second;
+            return std::make_unique<Node>(std::move(*lp), std::move(*rp), probability);
         }
         auto& rn = std::get<Node_ptr>(r);
-        probability = lp->second + rn->prob;
-        return std::make_unique<Node>(std::move(lp), std::move(rn), probability);
+        probability = (*lp)->second + rn->prob;
+        return std::make_unique<Node>(std::move(*lp), std::move(rn), probability);
     }
     auto& ln = std::get<Node_ptr>(l);
-    if (std::holds_alternative<combo_ptr>(r)) {
-        auto& rp = std::get<combo_ptr>(r);
-        probability = ln->prob + rp->second;
-        return std::make_unique<Node>(std::move(ln), std::move(rp), probability);
+    if (auto* rp = std::get_if<combo_ptr>(&r)) {
+        probability = ln->prob + (*rp)->second;
+        return std::make_unique<Node>(std::move(ln), std::move(*rp), probability);
     }
     auto& rn = std::get<Node_ptr>(r);
     probability = ln->prob + rn->prob;
@@ -92,8 +81,8 @@ combo_node build_node(combo_node&& l, combo_node&& r) {
 }
 
 template<typename T>
-void push_all(std::vector<T>& v1, const std::vector<T>& v2) {
-    v1.insert(v1.end(), v2.begin(), v2.end());
+void move_all(std::vector<T>& v1, std::vector<T>&& v2) {
+    v1.insert(v1.end(), std::move_iterator(v2.begin()), std::move_iterator(v2.end()));
 }
 
 std::vector<encoding> decodeTree(const Node_ptr& base, const std::string& symbols) {
@@ -109,11 +98,11 @@ std::vector<encoding> decodeTree(const Node_ptr& base, const std::string& symbol
             return result;
         }
         auto right = decodeTree(std::get<Node_ptr>(base->right), symbols + "1");
-        push_all(result, right);
+        move_all(result, std::move(right));
         return result;
     }
     auto left = decodeTree(std::get<Node_ptr>(base->left), symbols + "0");
-    push_all(result, left);
+    move_all(result, std::move(left));
     if (std::holds_alternative<combo_ptr>(base->right)) {
         auto& rp = std::get<combo_ptr>(base->right);
         encoding r(rp->first, symbols + "1");
@@ -121,7 +110,7 @@ std::vector<encoding> decodeTree(const Node_ptr& base, const std::string& symbol
         return result;
     }
     auto right = decodeTree(std::get<Node_ptr>(base->right), symbols + "1");
-    push_all(result, right);
+    move_all(result, std::move(right));
     return result;
 }
 
@@ -145,8 +134,7 @@ std::vector<encoding> huffman(const TIter& start, const TIter& end) {
     auto top = std::move(const_cast<combo_node&>(weighted.top()));
     if (auto tnode = std::get_if<combo_ptr>(&top)) {
         std::vector<encoding> result;
-        encoding p((*tnode)->first, "0");
-        result.push_back(p);
+        result.emplace_back((*tnode)->first, "0");
         return result;
     }
     return decodeTree(std::get<Node_ptr>(top), "");
