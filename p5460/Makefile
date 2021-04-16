@@ -1,4 +1,4 @@
-%: %.cpp logic.cpp print.cpp
+%: %.cpp print.cpp
 	g++ -std=c++17 $^ -o $*.exe
 	.\$*.exe
 
