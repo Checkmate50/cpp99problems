@@ -4,11 +4,7 @@
 #include<iostream>
 #include<vector>
 
-void print_vec(std::vector<char> v) {
-    for (int i = 0; i < v.size(); i++) {
-        std::cout<<v[i];
-    }
-}
+void print_vec(std::vector<char> v);
 
 template<typename T>
 void print_vec(std::vector<T> v) {

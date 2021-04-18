@@ -1,5 +1,5 @@
 %: %.cpp logic.cpp print.cpp
-	g++ -std=c++17 $^ -o $*.exe
+	g++ -std=c++17 $^ -o $*.exe -Wall -Wextra
 	.\$*.exe
 
 clean:
