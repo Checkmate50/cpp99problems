@@ -26,9 +26,9 @@ std::vector<int> prime_factors(int num) {
 template<typename T>
 std::vector<std::pair<T, int>> multiplicity(std::vector<T> v) {
     std::vector<std::pair<T, int>> to_return;
-    for (int i = 0; i < v.size(); i++) {
+    for (size_t i = 0; i < v.size(); i++) {
         bool found = false;
-        for (int j = 0; j < to_return.size(); j++) {
+        for (size_t j = 0; j < to_return.size(); j++) {
             if (v[i] == to_return[j].first) {
                 to_return[j].second += 1;
                 found = true;
@@ -46,7 +46,7 @@ std::vector<std::pair<T, int>> multiplicity(std::vector<T> v) {
 int totient(int num) {
     auto factors = multiplicity(prime_factors(num));
     double result = 1;
-    for (int i = 0; i < factors.size(); i++)
+    for (size_t i = 0; i < factors.size(); i++)
         result *= (factors[i].first - 1) * pow(factors[i].first, factors[i].second - 1);
     return result; 
 }

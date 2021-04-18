@@ -14,7 +14,7 @@ std::pair<T**, std::pair<int, int*>> pack(T (&v)[N]) {
     int max_size = 0;
     int cur_size = 1; // Since we start at 1
     // First figure out the dimensions of the storage list to initialize
-    for (int i = 1; i < N; i++) {
+    for (size_t i = 1; i < N; i++) {
         if (v[i] == v[i-1])
             cur_size++;
         else {
@@ -30,7 +30,7 @@ std::pair<T**, std::pair<int, int*>> pack(T (&v)[N]) {
     T* building = new T[max_size];
     int building_index = 0;
     int* list_sizes = new int[blocks];
-    for (int i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         building[building_index] = v[i];
         if (i == N - 1 || v[i] == v[i+1])
             building_index++;

@@ -11,7 +11,7 @@ template<typename T, typename U>
 void print_vec(std::vector<std::pair<T, U>> v) {
     std::cout<<'[';
     if (v.size() > 0) {
-        for (int i = 0; i < v.size()-1; i++) {
+        for (size_t i = 0; i < v.size()-1; i++) {
             std::cout<<'('<<v[i].first<<','<<v[i].second<<')'<<", ";
         }
         std::cout<<'('<<v[v.size()-1].first<<','<<v[v.size()-1].second<<')';
@@ -23,7 +23,7 @@ template<typename T>
 void print_vec(std::vector<T> v) {
     std::cout<<'[';
     if (v.size() > 0) {
-        for (int i = 0; i < v.size()-1; i++) {
+        for (size_t i = 0; i < v.size()-1; i++) {
             std::cout<<v[i]<<", ";
         }
         std::cout<<v[v.size()-1];
@@ -35,7 +35,7 @@ template<typename T>
 void print_vec(std::vector<std::vector<T>> v) {
     std::cout<<'[';
     if (v.size() >  0) {
-        for (int i = 0; i < v.size()-1; i++) {
+        for (size_t i = 0; i < v.size()-1; i++) {
             print_vec(v[i]);
             std::cout<<", ";
         }

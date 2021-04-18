@@ -10,7 +10,7 @@
 template<typename T, size_t N>
 std::pair<T*, int> decodeModified(std::variant<Single<T>*, Multiple<T>*> (&v)[N]) {
     int size = 0;
-    for (int i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         if (auto temp = std::get_if<Multiple<T>*>(&v[i]))
             size += (*temp)->count;
         else
@@ -18,7 +18,7 @@ std::pair<T*, int> decodeModified(std::variant<Single<T>*, Multiple<T>*> (&v)[N]
     }
     T* lst = new T[size];
     int index = 0;
-    for (int i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         if (auto n1 = std::get_if<Multiple<T>*>(&v[i])) {
             for (int j = 0; j < (*n1)->count; j++) {
                 lst[index] = (*n1)->v;

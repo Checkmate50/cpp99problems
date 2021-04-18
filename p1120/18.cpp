@@ -15,11 +15,11 @@ std::vector<T> slice(std::vector<T> arr, int low, int high) {
 int main() {
     std::string s = "abcdefghij";
     std::vector<char> test;
-    for (int i = 0; i < s.length(); i++) {
+    for (size_t i = 0; i < s.length(); i++) {
         test.push_back(s[i]);
     }
     auto result = slice(test, 3, 7);
-    for (int i = 0; i < result.size(); i++)
+    for (size_t i = 0; i < result.size(); i++)
         std::cout << result[i];
     std::cout << std::endl;
 }

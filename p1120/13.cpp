@@ -17,7 +17,7 @@ std::vector<std::variant<Single<T>*, Multiple<T>*>> encode_direct(std::vector<T>
         return to_return;
     T next_val = v[0];
     int next_size = 1;
-    for (int i = 1; i < v.size(); i++) {
+    for (size_t i = 1; i < v.size(); i++) {
         if (v[i] == v[i-1])
             next_size++;
         else {
@@ -47,12 +47,12 @@ std::vector<std::variant<Single<T>*, Multiple<T>*>> encode_direct(std::vector<T>
 int main() {
     char init[15] = "aaaabccaadeeee";
     std::vector<char> test;
-    for (int i = 0; i < 14; i++)
+    for (size_t i = 0; i < 14; i++)
         test.push_back(init[i]);
     auto result = encode_direct(test);
     std::cout << '[';
     std::variant<Single<char>*, Multiple<char>*> temp;
-    for (int i = 0; i < result.size() - 1; i++) {
+    for (size_t i = 0; i < result.size() - 1; i++) {
         temp = result[i];
         print_variant(temp, print_single<char>, print_multiple<char>);
         std::cout << ", ";

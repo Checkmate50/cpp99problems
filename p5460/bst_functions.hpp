@@ -32,10 +32,10 @@ std::vector<tree_ptr<T>> cbal_tree(int nodes, T val) {
         for (int i = 0; i < ((1 << (max_nodes_bit - 1)) >> 1); i++)
             leaves[0]->push(std::make_unique<Tree<T>>(val, nullptr, nullptr));
     }
-    for (int i = 0; i < balanced.size(); i++)
+    for (size_t i = 0; i < balanced.size(); i++)
         leaves.push_back(std::make_unique<std::queue<tree_ptr<T>>>());
 
-    for (int i = 0; i < balanced.size(); i++) {
+    for (size_t i = 0; i < balanced.size(); i++) {
         for (auto& branch : balanced[i]) {
             auto leaf_left = std::make_unique<Tree<T>>(val, nullptr, nullptr);
             auto leaf_right = std::make_unique<Tree<T>>(val, nullptr, nullptr);
@@ -49,7 +49,7 @@ std::vector<tree_ptr<T>> cbal_tree(int nodes, T val) {
     // Note the >> 1 to make the counting magic work
     for (int level = (1 << max_nodes_bit) >> 3; level > 0; level >>= 1) {
         for (int i = 0; i < level; i++) {
-            for (int j = 0; j < leaves.size(); j++) {
+            for (size_t j = 0; j < leaves.size(); j++) {
                 auto leaf1 = std::move(leaves[j]->front());
                 leaves[j]->pop();
                 auto leaf2 = std::move(leaves[j]->front());
@@ -58,7 +58,7 @@ std::vector<tree_ptr<T>> cbal_tree(int nodes, T val) {
             }
         }
     }
-    for (int i = 0 ; i < leaves.size(); i++)
+    for (size_t i = 0 ; i < leaves.size(); i++)
         result.push_back(std::move(leaves[i]->front()));
     return result;
 }

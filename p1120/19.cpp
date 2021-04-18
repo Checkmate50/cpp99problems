@@ -18,7 +18,7 @@ void rotate(T (&v)[N], int amount) {
             temp[i] = v[N - absamount + i - 1];
     }
     if (amount > 0) {
-        for (int i = 0; i < N; i++) {
+        for (size_t i = 0; i < N; i++) {
             if (i >= (N - amount))
                 v[i] = temp[i-N+amount];
             else

@@ -17,7 +17,7 @@ int main() {
     int test[3] = { 1, 2, 3 };
     auto result = dupli(test);
     std::cout << '[';
-    for (int i = 0; i < result.second - 1; i++) {
+    for (size_t i = 0; i < result.second - 1; i++) {
         std::cout << result.first[i] << ", ";
     }
     std::cout << result.first[result.second - 1] << ']' << std::endl;

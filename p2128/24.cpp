@@ -15,13 +15,13 @@ std::vector<int> range(size_t low, size_t high) {
 // Avoid modifying the underlying vector with a copy
 // Assumes a seed has already been set for rand
 template<typename T>
-T rnd_select(T const& v, int count) {
+T rnd_select(T const& v, size_t count) {
     T cp = v;
     T result;
     result.reserve(count);
     if (count >= cp.size())
         return cp;
-    for (int i = 0; i < count; i++) {
+    for (size_t i = 0; i < count; i++) {
         int index = rand() % cp.size();
         result.push_back(cp[index]);
         cp.erase(cp.begin()+index);
@@ -36,7 +36,7 @@ std::vector<int> diff_select(int count, int high) {
 int main() {
     auto result = diff_select(6, 49);
     std::cout << '[';
-    for (int i = 0; i < result.size()-1; i++)
+    for (size_t i = 0; i < result.size()-1; i++)
         std::cout << result[i] << ',';
     std::cout << result[result.size()-1] << ']' << std::endl;
 }

@@ -39,7 +39,7 @@ int main() {
     v.push_back(temp2);
     v.push_back(6);
     std::vector<int> result = flatten(v);
-    for (int i = 0; i < result.size(); i++) {
+    for (size_t i = 0; i < result.size(); i++) {
         std::cout << result[i] << " ";
     }
     std::cout << std::endl;

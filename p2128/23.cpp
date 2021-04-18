@@ -8,13 +8,13 @@
 // Avoid modifying the underlying vector with a copy
 // Assumes a seed has already been set for rand
 template<typename T>
-T rnd_select(T const& v, int count) {
+T rnd_select(T const& v, size_t count) {
     T cp = v;
     T result;
     result.reserve(count);
     if (count >= cp.size())
         return cp;
-    for (int i = 0; i < count; i++) {
+    for (size_t i = 0; i < count; i++) {
         int index = rand() % cp.size();
         result.push_back(cp[index]);
         cp.erase(cp.begin()+index);
@@ -26,10 +26,10 @@ int main() {
     std::string s = "abcdefgh";
     std::vector<char> test;
     srand(time(NULL));
-    for (int i = 0; i < s.length(); i++)
+    for (size_t i = 0; i < s.length(); i++)
         test.push_back(s[i]);
     auto result = rnd_select(test, 3);
-    for (int i = 0; i < result.size(); i++)
+    for (size_t i = 0; i < result.size(); i++)
         std::cout<<result[i];
     std::cout<<std::endl;
 }

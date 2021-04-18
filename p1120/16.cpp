@@ -8,7 +8,7 @@ template<typename T, size_t S>
 int drop(T (&v)[S], int N) {
     int count = 0;
     int shift = 0;
-    for (int i = 1; i < S; i++) {
+    for (size_t i = 1; i < S; i++) {
         count++;
         if (count % (N - 1) == 0) {
             count = 0;

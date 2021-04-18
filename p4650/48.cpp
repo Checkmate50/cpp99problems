@@ -5,5 +5,5 @@
 //  and(A,B) will succeed, if and only if both A and B succeed.
 
 int main() {
-    truth_table_n(3, [](std::vector<bool> v) { return v[0] iand (v[1] ior v[2]) iequ v[0] iand v[1] ior v[0] iand v[2]; });
+    truth_table_n(3, [](std::vector<bool> v) { return v[0] iand (v[1] ior v[2]) iequ ((v[0] iand v[1]) ior v[0]) iand v[2]; });
 }

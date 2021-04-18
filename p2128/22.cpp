@@ -13,7 +13,7 @@ std::vector<int> range(size_t low, size_t high) {
 int main() {
     auto test = range(4, 9);
     std::cout<<'[';
-    for (int i = 0; i < test.size()-1; i++)
+    for (size_t i = 0; i < test.size()-1; i++)
         std::cout<<test[i]<<',';
     std::cout<<test[test.size()-1]<<']'<<std::endl;
 }

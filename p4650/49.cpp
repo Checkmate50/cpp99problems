@@ -18,7 +18,7 @@ std::vector<std::string> gray_codes(int n) {
         for (int j = 0; j < n; j++) {
             // Magic bit-fiddling
             // Just stare at the solution long enough, and you'll see it :)
-            int bit = copy & 1 ^ ((copy & 2) >> 1);
+            int bit = (copy & 1) ^ ((copy & 2) >> 1);
             s.push_back(bit ? '1' : '0');
             copy >>= 1;
         }

@@ -38,9 +38,9 @@ std::vector<std::vector<T>> combinations(TIter start, TIter end, int count) {
     bool finished = false;
     while (!finished) {
         std::vector<T> next_item;
-        for (int i = 0; i < iterator_list.size(); i++)
+        for (size_t i = 0; i < iterator_list.size(); i++)
             next_item.push_back(*iterator_list[i]);
-        for (int i = iterator_list.size(); i --> 0; ) {
+        for (size_t i = iterator_list.size(); i --> 0; ) {
             iterator_list[i]++;
             if (iterator_list[i]+iterator_list.size()-i-1 >= end) {
                 if (i == 0) {
@@ -49,7 +49,7 @@ std::vector<std::vector<T>> combinations(TIter start, TIter end, int count) {
                 }
             }
             else {
-                for (int j = i+1; j < iterator_list.size(); j++) {
+                for (size_t j = i+1; j < iterator_list.size(); j++) {
                     if (j == 0)
                         iterator_list[j]++;
                     else
@@ -79,7 +79,7 @@ std::vector<std::vector<std::vector<T>>> group(std::vector<int> sizes, TIter sta
     std::vector<std::vector<std::vector<T>>> result;
     int dist = std::distance(start, end);
     int size_sum = 0;
-    for (int i = 0; i < sizes.size(); i++) {
+    for (size_t i = 0; i < sizes.size(); i++) {
         size_sum += sizes[i];
     }
     if (size_sum != dist)
@@ -90,17 +90,17 @@ std::vector<std::vector<std::vector<T>>> group(std::vector<int> sizes, TIter sta
     currentCombo.push_back(indices);
     combos.push_back(currentCombo);
     // First we find all the combos in terms of indices
-    for (int i = 0; i < sizes.size(); i++) {
+    for (size_t i = 0; i < sizes.size(); i++) {
         std::vector<std::vector<std::vector<int>>> new_combos;
-        for (int j = 0; j < combos.size(); j++) {
+        for (size_t j = 0; j < combos.size(); j++) {
             std::vector<std::vector<int>> cur_combo;
-            for (int k = 0; k < i; k++) {
+            for (size_t k = 0; k < i; k++) {
                 cur_combo.push_back(combos[j][k]);
             }
             auto cur_indices = combos[j][i]; // the next indices to test
             // Get the combations for the current appended indices
             auto combo = combinations(cur_indices.begin(), cur_indices.end(), sizes[i]);
-            for (int k = 0; k < combo.size(); k++) {
+            for (size_t k = 0; k < combo.size(); k++) {
                 auto new_indices = removeFromContainer(cur_indices.begin(), cur_indices.end(), combo[k]);
                 auto new_combo = cur_combo;
                 new_combo.push_back(combo[k]);
@@ -113,11 +113,11 @@ std::vector<std::vector<std::vector<T>>> group(std::vector<int> sizes, TIter sta
     }
     // Finally, construct the results array from the calculated indices
     // Inefficient as noted above, but what _can_ you do
-    for (int i = 0; i < combos.size(); i++) {
+    for (size_t i = 0; i < combos.size(); i++) {
         std::vector<std::vector<T>> ires;
-        for (int j = 0; j < combos[i].size(); j++) {
+        for (size_t j = 0; j < combos[i].size(); j++) {
             std::vector<T> jres;
-            for (int k = 0; k < combos[i][j].size(); k++) {
+            for (size_t k = 0; k < combos[i][j].size(); k++) {
                 jres.push_back(start[combos[i][j][k]]);
             }
             ires.push_back(jres);

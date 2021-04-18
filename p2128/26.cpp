@@ -29,9 +29,9 @@ std::vector<std::vector<T>> combinations(TIter start, TIter end, int count) {
     bool finished = false;
     while (!finished) {
         std::vector<T> next_item;
-        for (int i = 0; i < iterator_list.size(); i++)
+        for (size_t i = 0; i < iterator_list.size(); i++)
             next_item.push_back(*iterator_list[i]);
-        for (int i = iterator_list.size(); i --> 0; ) {
+        for (size_t i = iterator_list.size(); i --> 0; ) {
             iterator_list[i]++;
             if (iterator_list[i]+iterator_list.size()-i-1 >= end) {
                 if (i == 0) {
@@ -40,7 +40,7 @@ std::vector<std::vector<T>> combinations(TIter start, TIter end, int count) {
                 }
             }
             else {
-                for (int j = i+1; j < iterator_list.size(); j++) {
+                for (size_t j = i+1; j < iterator_list.size(); j++) {
                     if (j == 0)
                         iterator_list[j]++;
                     else

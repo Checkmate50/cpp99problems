@@ -4,7 +4,7 @@
 
 template<typename T, size_t N>
 void removeAt(T (&v)[N], int index) {
-    for (int i = index; i < N - 1; i++) {
+    for (size_t i = index; i < N - 1; i++) {
         v[i] = v[i+1];
     }
 }
